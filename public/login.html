@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – MediBook</title>
+  <meta name="description" content="Login to your medical appointment dashboard." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-bg-shapes {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .auth-bg-shapes .shape-1 {
+      position: absolute; width: 600px; height: 600px; background: var(--primary); top: -200px; left: -200px; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+    }
+    .auth-bg-shapes .shape-2 {
+      position: absolute; width: 500px; height: 500px; background: var(--secondary); bottom: -150px; right: -100px; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+    }
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 1;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(20px);
+    }
+    .auth-header { text-align: center; margin-bottom: 32px; }
+    .auth-header h2 { font-size: 2.2rem; margin-bottom: 8px; font-family: var(--font-display); }
+    .auth-header p { color: var(--text-secondary); font-size: 0.95rem; }
+    
+    .auth-tabs {
+      display: flex;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-full);
+      padding: 6px;
+      margin-bottom: 32px;
+    }
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      border-radius: var(--radius-full);
+      transition: all var(--transition);
+    }
+    .auth-tab:hover {
+      color: var(--text-primary);
+    }
+    .auth-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(79,70,229,0.3);
+    }
+    
+    .form-group { margin-bottom: 22px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+    
+    .input-field {
+      width: 100%;
+      background: var(--bg-subtle);
+      border: 1.5px solid var(--border);
+      color: var(--text-primary);
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all var(--transition);
+      font-family: inherit;
+    }
+    .input-field:focus {
+      border-color: var(--primary-light);
+      background: rgba(99,102,241,0.05);
+      box-shadow: 0 0 0 4px rgba(99,102,241,0.1);
+    }
+    .input-field::placeholder { color: var(--text-muted); }
+    
+    .auth-footer { text-align: center; margin-top: 32px; font-size: 0.95rem; color: var(--text-secondary); }
+    .auth-footer a { color: var(--primary-light); font-weight: 600; text-decoration: none; transition: color var(--transition); }
+    .auth-footer a:hover { color: var(--primary); text-decoration: underline; }
+    
+    .forgot-link { display: block; text-align: right; font-size: 0.82rem; color: var(--primary-light); margin-top: 10px; font-weight: 500; transition: color var(--transition); }
+    .forgot-link:hover { color: var(--primary); text-decoration: underline; }
+    
+    .auth-form-view { display: none; animation: fadeIn 0.4s ease; }
+    .auth-form-view.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L13.5 8.5L20 7L15.5 12L20 17L13.5 15.5L12 22L10.5 15.5L4 17L8.5 12L4 7L10.5 8.5L12 2Z" fill="white"/></svg>
+        </div>
+        <span>Medi<strong>Book</strong></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="book.html" class="btn-nav-book">Book Now</a></li>
+      </ul>
+
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- LOGIN/REGISTER SECTION -->
+  <section class="auth-page">
+    <div class="auth-bg-shapes">
+      <div class="shape-1"></div>
+      <div class="shape-2"></div>
+    </div>
+    
+    <div class="auth-card">
+      <div class="auth-header" id="authHeaderTitle">
+        <h2 class="gradient-text">Welcome Back</h2>
+        <p>Log in to manage your appointments</p>
+      </div>
+
+      <div class="auth-tabs" id="mainTabs">
+        <div class="auth-tab active" data-target="login-view">Login</div>
+        <div class="auth-tab" data-target="register-view">Sign Up</div>
+      </div>
+
+      <!-- LOGIN VIEW -->
+      <div id="login-view" class="auth-form-view active">
+        <div class="auth-tabs" style="margin-bottom: 20px;">
+          <div class="auth-tab active login-type-tab" data-type="email">Email</div>
+          <div class="auth-tab login-type-tab" data-type="phone">Phone Number</div>
+        </div>
+
+        <form id="login-form">
+          <div class="form-group" id="loginEmailGroup">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" class="input-field" placeholder="you@example.com" />
+          </div>
+          <div class="form-group" id="loginPhoneGroup" style="display:none;">
+            <label for="loginPhone">Phone Number</label>
+            <input type="tel" id="loginPhone" class="input-field" placeholder="e.g. 9876543210" />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required />
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+          <div id="authErrorMsg" style="color:red;font-size:0.85rem;margin-bottom:10px;text-align:center;display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; margin-top: 12px;" id="loginBtn">
+            Sign In to MediBook
+          </button>
+        </form>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="register-view" class="auth-form-view">
+        <form id="register-form">
+          <div class="form-group">
+            <label for="regName">Full Name</label>
+            <input type="text" id="regName" class="input-field" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" class="input-field" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Phone Number</label>
+            <input type="tel" id="regPhone" class="input-field" placeholder="e.g. 9876543210" required />
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" class="input-field" placeholder="••••••••" required />
+          </div>
+          <div id="regErrorMsg" style="color:red;font-size:0.85rem;margin-bottom:10px;text-align:center;display:none;"></div>
+          <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center; margin-top: 12px;" id="regBtn">
+            Create Account
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+  <script>
+    // Tab Switching Logic for Login / Register
+    const mainTabs = document.querySelectorAll('#mainTabs .auth-tab');
+    const authViews = document.querySelectorAll('.auth-form-view');
+    const headerTitle = document.querySelector('#authHeaderTitle h2');
+    const headerP = document.querySelector('#authHeaderTitle p');
+
+    mainTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        mainTabs.forEach(t => t.classList.remove('active'));
+        authViews.forEach(f => f.classList.remove('active'));
+        tab.classList.add('active');
+        
+        const target = tab.getAttribute('data-target');
+        document.getElementById(target).classList.add('active');
+
+        if (target === 'login-view') {
+          headerTitle.textContent = 'Welcome Back';
+          headerP.textContent = 'Log in to manage your appointments';
+        } else {
+          headerTitle.textContent = 'Create Account';
+          headerP.textContent = 'Join MediBook to start booking';
+        }
+      });
+    });
+
+    // Tab Switching Logic for Email / Phone
+    let currentLoginType = 'email';
+    const loginTypeTabs = document.querySelectorAll('.login-type-tab');
+    loginTypeTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        loginTypeTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentLoginType = tab.getAttribute('data-type');
+        
+        if (currentLoginType === 'email') {
+          document.getElementById('loginEmailGroup').style.display = 'block';
+          document.getElementById('loginPhoneGroup').style.display = 'none';
+        } else {
+          document.getElementById('loginEmailGroup').style.display = 'none';
+          document.getElementById('loginPhoneGroup').style.display = 'block';
+        }
+      });
+    });
+
+    // Handle Login
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const phone = document.getElementById('loginPhone').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorMsg = document.getElementById('authErrorMsg');
+      const btn = document.getElementById('loginBtn');
+      
+      const payload = { password };
+      if (currentLoginType === 'email') payload.email = email;
+      if (currentLoginType === 'phone') payload.phone = phone;
+
+      errorMsg.style.display = 'none';
+      btn.innerHTML = 'Signing in...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.error || 'Login failed');
+        }
+
+        // Save token & user
+        localStorage.setItem('medibook_token', data.token);
+        localStorage.setItem('medibook_user', JSON.stringify(data.user));
+
+        if(window.showToast) window.showToast('success', 'Login successful! Redirecting...');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.style.display = 'block';
+        btn.innerHTML = 'Sign In to MediBook';
+        btn.disabled = false;
+      }
+    });
+
+    // Handle Register
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const phone = document.getElementById('regPhone').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const errorMsg = document.getElementById('regErrorMsg');
+      const btn = document.getElementById('regBtn');
+      
+      errorMsg.style.display = 'none';
+      btn.innerHTML = 'Creating account...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, password })
+        });
+        const data = await res.json();
+        
+        if (!res.ok) {
+          throw new Error(data.error || 'Registration failed');
+        }
+
+        localStorage.setItem('medibook_token', data.token);
+        localStorage.setItem('medibook_user', JSON.stringify(data.user));
+
+        if(window.showToast) window.showToast('success', 'Account created! Redirecting...');
+        setTimeout(() => window.location.href = 'dashboard.html', 800);
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.style.display = 'block';
+        btn.innerHTML = 'Create Account';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
